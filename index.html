@@ -1,0 +1,1692 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Myat Moe Thwin — Senior Systems Administrator / A Working Dossier</title>
+<meta name="description" content="The working dossier of Myat Moe Thwin — a Senior Systems Administrator specialising in APAC data centre infrastructure, VMware vSphere, NetApp ONTAP, and enterprise monitoring across Singapore, Japan, Australia, and Malaysia.">
+<meta name="keywords" content="Myat Moe Thwin, Senior Systems Administrator, APAC, VMware vSphere, NetApp ONTAP, Pure Storage, Veeam, Zabbix, SQL Server HA, data centre, Singapore">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ═════════════════ TOKENS ═════════════════ */
+:root {
+  --paper:    #f6f8fb;    /* cool neutral grey — soft, premium */
+  --paper-2:  #ffffff;    /* pure white for section alternation */
+  --paper-3:  #eef1f6;    /* deeper grey for cards & frames */
+  --ink:      #0f172a;    /* deep slate navy */
+  --ink-2:    #1e293b;
+  --muted:    #475569;
+  --dim:      #94a3b8;
+  --faint:    #cbd5e1;
+  --rule:     rgba(15,23,42,0.1);
+  --rule-2:   rgba(15,23,42,0.05);
+  --accent:   #4f46e5;    /* indigo — premium, modern */
+  --accent-2: #7c3aed;    /* violet complementary */
+  --serif:    'Space Grotesk', -apple-system, system-ui, sans-serif;
+  --sans:     'Inter', -apple-system, system-ui, sans-serif;
+  --mono:     'JetBrains Mono', 'Courier New', monospace;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+body {
+  font-family: var(--sans);
+  background: var(--paper);
+  color: var(--ink);
+  font-size: 15px;
+  line-height: 1.7;
+  overflow-x: hidden;
+  font-feature-settings: "kern", "liga", "ss01";
+}
+a { color: inherit; text-decoration: none; }
+ul, ol { list-style: none; }
+img { display: block; max-width: 100%; }
+::selection { background: var(--ink); color: var(--paper); }
+
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: var(--paper); }
+::-webkit-scrollbar-thumb { background: var(--rule); border-radius: 5px; }
+::-webkit-scrollbar-thumb:hover { background: var(--dim); }
+
+/* ═════════════════ TOP BAR ═════════════════ */
+#topbar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  background: rgba(247,243,233,0.92);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--rule);
+  z-index: 100;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  padding: 0 36px;
+  gap: 32px;
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+.brand-mark {
+  width: 28px; height: 28px;
+  background: var(--ink);
+  color: var(--paper);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--serif);
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: -0.3px;
+}
+.brand-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+}
+.brand-name {
+  font-family: var(--serif);
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: -0.2px;
+}
+.brand-role {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  color: var(--muted);
+  letter-spacing: 0.04em;
+  text-transform: lowercase;
+}
+.topnav {
+  display: flex;
+  gap: 2px;
+  align-items: center;
+  flex: 1;
+  justify-content: center;
+}
+.topnav a {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--muted);
+  padding: 6px 12px;
+  letter-spacing: 0.02em;
+  position: relative;
+  transition: color 0.2s;
+}
+.topnav a .nav-num {
+  color: var(--dim);
+  margin-right: 4px;
+}
+.topnav a:hover, .topnav a.active {
+  color: var(--ink);
+}
+.topnav a.active .nav-num { color: var(--accent); }
+.topcta {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-shrink: 0;
+}
+.enquire {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink);
+  padding: 7px 14px;
+  border: 1px solid var(--ink);
+  transition: background 0.2s, color 0.2s;
+}
+.enquire:hover { background: var(--ink); color: var(--paper); }
+.topcta .index-label {
+  font-family: var(--serif);
+  
+  font-size: 13px;
+  color: var(--muted);
+}
+
+#burger {
+  display: none;
+  background: none;
+  border: 1px solid var(--rule);
+  padding: 6px 10px;
+  cursor: pointer;
+  margin-left: auto;
+  font-size: 16px;
+  color: var(--ink);
+}
+#mobnav {
+  display: none;
+  position: fixed;
+  top: 60px; left: 0; right: 0;
+  background: var(--paper);
+  border-bottom: 1px solid var(--rule);
+  padding: 20px 24px;
+  z-index: 99;
+  flex-direction: column;
+  gap: 2px;
+}
+#mobnav.open { display: flex; }
+#mobnav a {
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--muted);
+  padding: 10px 12px;
+  letter-spacing: 0.03em;
+  display: flex;
+  gap: 10px;
+  border-bottom: 1px solid var(--rule-2);
+}
+#mobnav a:last-child { border-bottom: 0; }
+#mobnav a .nav-num { color: var(--accent); font-weight: 700; }
+
+/* ═════════════════ PAGE WRAPPER ═════════════════ */
+#page { padding-top: 60px; position: relative; }
+.wrap {
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 0 48px;
+}
+
+/* ═════════════════ SECTION HEADER ═════════════════ */
+section {
+  padding: 88px 0 96px;
+  border-bottom: 1px solid var(--rule);
+  position: relative;
+}
+section:nth-of-type(even) { background: var(--paper-2); }
+.sec-eyebrow {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  margin-bottom: 18px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+}
+.sec-mark {
+  color: var(--accent);
+  font-family: var(--mono);
+  font-weight: 600;
+  font-size: 13px;
+}
+.sec-title {
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: clamp(32px, 4vw, 48px);
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  color: var(--ink);
+  margin-bottom: 48px;
+}
+.sec-title em {
+  color: var(--accent);
+  font-weight: 700;
+}
+
+/* ═════════════════ §00 TITLE PAGE ═════════════════ */
+#title {
+  padding: 80px 0 72px;
+  background: var(--paper) !important;
+}
+
+.doc-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 56px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--rule);
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: 0.04em;
+}
+.doc-header .doc-left { display: flex; gap: 24px; align-items: baseline; }
+.doc-title-small {
+  font-family: var(--serif);
+  
+  font-weight: 400;
+  color: var(--ink);
+  font-size: 13px;
+}
+.doc-header .status {
+  color: var(--accent);
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.doc-header .status::before {
+  content: '';
+  width: 6px; height: 6px;
+  background: var(--accent);
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.title-grid {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  gap: 56px;
+  align-items: start;
+}
+
+.title-main { }
+
+.section-marker {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: 0.08em;
+  margin-bottom: 20px;
+  display: flex;
+  gap: 10px;
+  align-items: baseline;
+}
+.section-marker .mark {
+  color: var(--accent);
+  font-family: var(--serif);
+  
+  font-size: 15px;
+  font-weight: 500;
+}
+
+h1.name {
+  font-family: var(--serif);
+  font-weight: 700;
+  font-size: clamp(48px, 6.5vw, 96px);
+  line-height: 0.95;
+  letter-spacing: -0.045em;
+  margin-bottom: 32px;
+  color: var(--ink);
+}
+h1.name .space { display: inline-block; width: 0.3em; }
+h1.name .dot {
+  color: var(--accent);
+  display: inline-block;
+  margin-left: -0.1em;
+}
+
+.pitch {
+  font-family: var(--sans);
+  font-weight: 400;
+  font-size: clamp(18px, 2vw, 22px);
+  line-height: 1.5;
+  color: var(--ink-2);
+  margin-bottom: 36px;
+  max-width: 680px;
+  letter-spacing: -0.015em;
+}
+
+.summary {
+  font-size: 15px;
+  line-height: 1.8;
+  color: var(--muted);
+  margin-bottom: 44px;
+  max-width: 640px;
+}
+.summary strong { color: var(--ink); font-weight: 600; }
+
+.meta-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1px;
+  margin-bottom: 44px;
+  background: var(--rule);
+  border: 1px solid var(--rule);
+}
+.meta-cell {
+  background: var(--paper);
+  padding: 16px 18px;
+}
+.meta-cell .label {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  color: var(--dim);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.meta-cell .value {
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: 15px;
+  color: var(--ink);
+  line-height: 1.3;
+}
+
+.cta-row {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.cta {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--ink);
+  padding: 11px 20px;
+  border: 1px solid var(--ink);
+  transition: background 0.2s, color 0.2s;
+  letter-spacing: 0.02em;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.cta:hover { background: var(--ink); color: var(--paper); }
+.cta.primary { background: var(--ink); color: var(--paper); }
+.cta.primary:hover { background: var(--accent); border-color: var(--accent); }
+.cta .arrow { font-family: var(--serif); }
+
+/* Title aside — portrait + metrics */
+.title-aside { }
+
+.figure {
+  background: var(--paper-3);
+  border: 1px solid var(--rule);
+  aspect-ratio: 3 / 4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+  position: relative;
+  overflow: hidden;
+}
+.figure img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  filter: sepia(0.1) contrast(0.98);
+}
+.figure .initials-fallback {
+  font-family: var(--serif);
+  font-size: 72px;
+  font-weight: 500;
+  color: var(--muted);
+  letter-spacing: -0.03em;
+}
+.figure-caption {
+  font-family: var(--serif);
+  
+  font-size: 12px;
+  color: var(--muted);
+  padding-top: 8px;
+  border-top: 1px solid var(--rule);
+  display: flex;
+  justify-content: space-between;
+}
+.figure-caption .no { font-family: var(--mono); font-style: normal; font-size: 10px; color: var(--dim); }
+
+.metrics {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: var(--rule);
+  border: 1px solid var(--rule);
+  margin-top: 28px;
+}
+.metric {
+  background: var(--paper);
+  padding: 18px;
+  text-align: left;
+}
+.metric .big {
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: 36px;
+  color: var(--ink);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  margin-bottom: 4px;
+}
+.metric .big .unit { color: var(--accent); }
+.metric .lbl {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  color: var(--dim);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  line-height: 1.4;
+}
+
+/* ═════════════════ MARQUEE ═════════════════ */
+.marquee-section {
+  padding: 24px 0;
+  background: var(--ink) !important;
+  color: var(--paper);
+  overflow: hidden;
+  border-bottom: 1px solid var(--ink);
+  border-top: 1px solid var(--ink);
+}
+.marquee {
+  display: flex;
+  overflow: hidden;
+  mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+}
+.marquee-track {
+  display: flex;
+  gap: 32px;
+  animation: scroll 60s linear infinite;
+  flex-shrink: 0;
+  padding-right: 32px;
+}
+.marquee-track span {
+  font-family: var(--serif);
+  
+  font-weight: 400;
+  font-size: 18px;
+  white-space: nowrap;
+  color: var(--paper);
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+.marquee-track span::after {
+  content: '✦';
+  color: var(--accent);
+  font-size: 14px;
+  font-style: normal;
+}
+@keyframes scroll {
+  to { transform: translateX(-50%); }
+}
+
+/* ═════════════════ §01 OPERATIONS RECORD ═════════════════ */
+.record {
+  position: relative;
+}
+.record-item {
+  display: grid;
+  grid-template-columns: 72px 1fr;
+  gap: 32px;
+  padding: 36px 0;
+  border-top: 1px solid var(--rule);
+  position: relative;
+}
+.record-item:first-child { border-top: 2px solid var(--ink); }
+.record-item:last-child { border-bottom: 2px solid var(--ink); }
+
+.record-num {
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: 72px;
+  line-height: 0.9;
+  color: var(--ink);
+  letter-spacing: -0.04em;
+}
+.record-body { }
+.record-meta {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--muted);
+  margin-bottom: 10px;
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.record-meta .remote { color: var(--accent); font-weight: 700; }
+.record-role {
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: 26px;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  margin-bottom: 2px;
+  color: var(--ink);
+}
+.record-role em { color: var(--muted); font-weight: 500; }
+.record-company {
+  font-family: var(--serif);
+  
+  font-weight: 400;
+  font-size: 16px;
+  color: var(--muted);
+  margin-bottom: 20px;
+}
+.record-company a { border-bottom: 1px solid var(--rule); }
+.record-company a:hover { color: var(--ink); border-color: var(--ink); }
+
+.record-ul { margin-top: 8px; }
+.record-ul li {
+  display: grid;
+  grid-template-columns: 32px 1fr;
+  gap: 10px;
+  padding: 6px 0;
+  font-size: 14px;
+  color: var(--muted);
+  line-height: 1.65;
+}
+.record-ul li .idx {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--dim);
+  padding-top: 4px;
+}
+
+.record-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 16px;
+}
+.record-tags span {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--muted);
+  padding: 3px 10px;
+  border: 1px solid var(--rule);
+  background: var(--paper);
+  letter-spacing: 0.02em;
+}
+
+/* ═════════════════ §02 CASE FILES ═════════════════ */
+.cases {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1px;
+  background: var(--rule);
+  border: 1px solid var(--rule);
+}
+.case {
+  background: var(--paper);
+  padding: 32px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  transition: background 0.2s;
+}
+.case:hover { background: var(--paper-3); }
+.case-glyph {
+  width: 48px; height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--rule);
+  background: var(--paper-2);
+  margin-bottom: 8px;
+  font-family: var(--serif);
+  
+  font-weight: 400;
+  font-size: 22px;
+  color: var(--accent);
+}
+.case-meta {
+  display: flex;
+  gap: 14px;
+  align-items: baseline;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  color: var(--muted);
+  letter-spacing: 0.04em;
+}
+.case-meta .case-no { color: var(--accent); font-weight: 700; }
+.case-category {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--dim);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.case-title {
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: 22px;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+.case-desc {
+  font-size: 13.5px;
+  color: var(--muted);
+  line-height: 1.65;
+  flex: 1;
+}
+.case-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding-top: 12px;
+  border-top: 1px solid var(--rule);
+}
+.case-tags span {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  color: var(--muted);
+  letter-spacing: 0.02em;
+}
+.case-tags span::before { content: '/ '; color: var(--dim); }
+.case-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-top: 6px;
+}
+.case-org {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  color: var(--dim);
+}
+
+/* ═════════════════ §03 COMPETENCY INDEX ═════════════════ */
+.comp-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 72px;
+}
+.comp-col h3 {
+  font-family: var(--serif);
+  
+  font-weight: 500;
+  font-size: 22px;
+  color: var(--ink);
+  margin-bottom: 18px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--ink);
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+.comp-col h3 .letter {
+  font-family: var(--serif);
+  font-size: 36px;
+  font-weight: 500;
+  color: var(--accent);
+  font-style: normal;
+  letter-spacing: -0.03em;
+}
+.comp-col ol { counter-reset: compc; }
+.comp-col ol li {
+  display: grid;
+  grid-template-columns: 48px 1fr auto;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--rule-2);
+  align-items: baseline;
+}
+.comp-col ol li .idx {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  color: var(--dim);
+  letter-spacing: 0.02em;
+}
+.comp-col ol li .name {
+  font-family: var(--sans);
+  font-size: 14px;
+  color: var(--ink);
+  font-weight: 500;
+}
+.comp-col ol li .dot {
+  color: var(--accent);
+  font-size: 10px;
+}
+
+/* ═════════════════ §04 CREDENTIALS ═════════════════ */
+.cred-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.3fr 0.8fr;
+  gap: 56px;
+}
+.cred-block h3 {
+  font-family: var(--serif);
+  
+  font-weight: 500;
+  font-size: 18px;
+  color: var(--muted);
+  margin-bottom: 16px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--rule);
+}
+.cred-edu h4 {
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 1.3;
+  margin-bottom: 6px;
+  letter-spacing: -0.01em;
+}
+.cred-edu p {
+  font-size: 13px;
+  color: var(--muted);
+  margin-bottom: 4px;
+}
+.cred-edu .cred-year {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--dim);
+  letter-spacing: 0.02em;
+}
+.cred-edu .cred-note {
+  font-family: var(--serif);
+  
+  font-size: 12px;
+  color: var(--dim);
+  margin-top: 8px;
+}
+
+.credly-badge-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--muted);
+  padding: 8px 14px;
+  margin-bottom: 16px;
+  border: 1px solid var(--rule);
+  background: var(--paper-3);
+  letter-spacing: 0.02em;
+  transition: color 0.2s, border-color 0.2s, background 0.2s;
+}
+.credly-badge-link:hover {
+  color: #e85a2a;
+  border-color: #e85a2a;
+  background: var(--paper-2);
+}
+.credly-badge-link svg { color: #e85a2a; }
+.credly-badge-link .credly-arrow { color: var(--dim); margin-left: 2px; font-family: var(--serif); }
+.credly-dot {
+  color: #e85a2a;
+  font-size: 8px;
+  vertical-align: middle;
+  margin-left: 4px;
+  line-height: 1;
+}
+
+.cert-list { }
+.cert-list li {
+  display: grid;
+  grid-template-columns: 42px 1fr auto;
+  gap: 12px;
+  padding: 7px 0;
+  border-bottom: 1px solid var(--rule-2);
+  align-items: baseline;
+  font-size: 13px;
+}
+.cert-list li .idx { font-family: var(--mono); font-size: 10.5px; color: var(--dim); }
+.cert-list li .issuer {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--accent);
+  letter-spacing: 0.02em;
+}
+.cert-list li .name { color: var(--ink); }
+
+.cred-langs li {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--rule-2);
+  align-items: baseline;
+}
+.cred-langs li .lang {
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: 15px;
+}
+.cred-langs li .level {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: 0.02em;
+}
+
+/* ═════════════════ §05 FAQ ═════════════════ */
+.faq-list { max-width: 820px; }
+.faq-item {
+  padding: 24px 0;
+  border-bottom: 1px solid var(--rule);
+}
+.faq-item:first-child { border-top: 2px solid var(--ink); }
+.faq-item details { cursor: pointer; }
+.faq-item summary {
+  display: flex;
+  gap: 20px;
+  align-items: baseline;
+  list-style: none;
+  cursor: pointer;
+}
+.faq-item summary::-webkit-details-marker { display: none; }
+.faq-item .q-idx {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--accent);
+  letter-spacing: 0.02em;
+  flex-shrink: 0;
+  width: 48px;
+}
+.faq-item .q-text {
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: 22px;
+  line-height: 1.35;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+  flex: 1;
+}
+.faq-item .q-sign {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: 28px;
+  color: var(--muted);
+  transition: transform 0.3s;
+  line-height: 1;
+}
+.faq-item details[open] .q-sign { transform: rotate(45deg); }
+.faq-item .answer {
+  padding-left: 68px;
+  padding-top: 16px;
+  padding-right: 40px;
+  color: var(--muted);
+  font-size: 14.5px;
+  line-height: 1.75;
+  max-width: 720px;
+}
+
+/* ═════════════════ §06 CORRESPONDENCE ═════════════════ */
+.corr-intro {
+  font-family: var(--serif);
+  
+  font-size: 20px;
+  color: var(--ink-2);
+  line-height: 1.6;
+  margin-bottom: 48px;
+  max-width: 720px;
+}
+.corr-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1px;
+  background: var(--rule);
+  border: 1px solid var(--rule);
+  margin-bottom: 48px;
+}
+.corr-row {
+  background: var(--paper);
+  padding: 22px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  transition: background 0.2s;
+}
+.corr-row:hover { background: var(--paper-3); }
+.corr-row .lbl {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  color: var(--dim);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.corr-row .val {
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: 18px;
+  color: var(--ink);
+  line-height: 1.3;
+}
+.corr-row .val a { border-bottom: 1px solid var(--rule); }
+.corr-row .val a:hover { color: var(--accent); border-color: var(--accent); }
+.corr-row .arrow { font-family: var(--serif); color: var(--muted); }
+
+.corr-refs h3 {
+  font-family: var(--serif);
+  
+  font-weight: 500;
+  font-size: 20px;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--rule);
+  color: var(--ink);
+}
+.ref-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.refs-note {
+  font-size: 14.5px;
+  color: var(--muted);
+  line-height: 1.75;
+  max-width: 640px;
+  padding: 16px 20px;
+  background: var(--paper-3);
+  border-left: 2px solid var(--accent);
+}
+.ref {
+  padding: 20px 22px;
+  background: var(--paper-2);
+  border: 1px solid var(--rule);
+}
+.ref h4 {
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: 16px;
+  margin-bottom: 4px;
+  color: var(--ink);
+}
+.ref .ref-role {
+  font-size: 12.5px;
+  color: var(--muted);
+  margin-bottom: 2px;
+}
+.ref .ref-org {
+  font-family: var(--serif);
+  
+  font-size: 12.5px;
+  color: var(--accent);
+  margin-bottom: 10px;
+}
+.ref .ref-email {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: 0.02em;
+}
+.ref .ref-email:hover { color: var(--ink); }
+
+/* ═════════════════ FOOTER ═════════════════ */
+footer {
+  padding: 56px 0 48px;
+  background: var(--ink);
+  color: var(--paper);
+  text-align: center;
+}
+footer .end {
+  font-family: var(--serif);
+  
+  font-weight: 400;
+  font-size: 16px;
+  margin-bottom: 16px;
+}
+footer .end .accent-dot { color: var(--accent); }
+footer .colophon {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  color: var(--faint);
+  letter-spacing: 0.04em;
+  margin-top: 20px;
+  line-height: 1.8;
+}
+footer .colophon strong { color: var(--paper); font-weight: 600; }
+
+/* ═════════════════ RESPONSIVE ═════════════════ */
+@media (max-width: 1024px) {
+  .wrap { padding: 0 32px; }
+  #topbar { padding: 0 24px; gap: 16px; }
+  .topnav a { padding: 6px 8px; }
+  .title-grid { grid-template-columns: 1fr 240px; gap: 36px; }
+  .meta-grid { grid-template-columns: repeat(3, 1fr); }
+  .cases { grid-template-columns: 1fr; }
+  .cred-grid { grid-template-columns: 1fr; gap: 40px; }
+}
+
+@media (max-width: 768px) {
+  #topbar { padding: 0 20px; }
+  .topnav, .topcta { display: none; }
+  #burger { display: block; }
+  .wrap { padding: 0 20px; }
+  section { padding: 56px 0 64px; }
+  .doc-header { flex-direction: column; gap: 10px; align-items: flex-start; }
+  .title-grid { grid-template-columns: 1fr; gap: 40px; }
+  .figure { max-width: 260px; }
+  .meta-grid { grid-template-columns: 1fr 1fr; }
+  .record-item { grid-template-columns: 1fr; gap: 12px; }
+  .record-num { font-size: 44px; }
+  .comp-grid { grid-template-columns: 1fr; gap: 40px; }
+  .corr-grid, .ref-grid { grid-template-columns: 1fr; }
+  .faq-item .q-text { font-size: 18px; }
+  .faq-item .answer { padding-left: 68px; padding-right: 0; }
+  .cta-row { flex-direction: column; align-items: stretch; }
+  .cta { justify-content: center; }
+  h1.name { font-size: clamp(44px, 11vw, 72px); }
+}
+
+@media (max-width: 480px) {
+  .meta-grid { grid-template-columns: 1fr; }
+  .metrics { grid-template-columns: 1fr; }
+  .faq-item summary { gap: 12px; }
+  .faq-item .q-idx { width: 36px; font-size: 10px; }
+  .faq-item .answer { padding-left: 48px; }
+  .cert-list li { grid-template-columns: 32px 1fr; }
+  .cert-list li .issuer { grid-column: 2; margin-top: 2px; }
+}
+
+/* Reveal */
+.reveal { opacity: 1; transform: none; transition: opacity 0.6s ease, transform 0.6s ease; }
+.reveal.animate { opacity: 0; transform: translateY(16px); }
+.reveal.animate.visible { opacity: 1; transform: translateY(0); }
+</style>
+</head>
+<body>
+
+<!-- ═══ TOP BAR ═══ -->
+<nav id="topbar">
+  <a href="#top" class="brand">
+    <div class="brand-mark">M</div>
+    <div class="brand-text">
+      <span class="brand-name">Myat Moe Thwin</span>
+      <span class="brand-role">senior systems administrator.</span>
+    </div>
+  </a>
+  <div class="topnav">
+    <a href="#record"><span class="nav-num">01</span>Record</a>
+    <a href="#cases"><span class="nav-num">02</span>Case Files</a>
+    <a href="#competencies"><span class="nav-num">03</span>Competencies</a>
+    <a href="#credentials"><span class="nav-num">04</span>Credentials</a>
+    <a href="#faq"><span class="nav-num">05</span>FAQ</a>
+    <a href="#correspond"><span class="nav-num">06</span>Correspond</a>
+  </div>
+  <div class="topcta">
+    <a href="mailto:myatmoe27@gmail.com" class="enquire">Enquire →</a>
+    <span class="index-label">Index</span>
+  </div>
+  <button id="burger" onclick="document.getElementById('mobnav').classList.toggle('open')">☰</button>
+</nav>
+
+<div id="mobnav">
+  <a href="#record" onclick="document.getElementById('mobnav').classList.remove('open')"><span class="nav-num">01</span> Record</a>
+  <a href="#cases" onclick="document.getElementById('mobnav').classList.remove('open')"><span class="nav-num">02</span> Case Files</a>
+  <a href="#competencies" onclick="document.getElementById('mobnav').classList.remove('open')"><span class="nav-num">03</span> Competencies</a>
+  <a href="#credentials" onclick="document.getElementById('mobnav').classList.remove('open')"><span class="nav-num">04</span> Credentials</a>
+  <a href="#faq" onclick="document.getElementById('mobnav').classList.remove('open')"><span class="nav-num">05</span> FAQ</a>
+  <a href="#correspond" onclick="document.getElementById('mobnav').classList.remove('open')"><span class="nav-num">06</span> Correspond</a>
+</div>
+
+<div id="page">
+
+<!-- ═══ §00 TITLE PAGE ═══ -->
+<section id="title">
+  <div class="wrap">
+    <!-- Document header -->
+    <div class="doc-header">
+      <div class="doc-left">
+        <span class="doc-title-small">Working Dossier</span>
+        <span>v2026.1</span>
+        <span>Singapore · APAC</span>
+      </div>
+      <div class="status">Available</div>
+    </div>
+
+    <div class="title-grid">
+      <div class="title-main">
+        <div class="section-marker">
+          <span class="mark">§00</span>
+          <span>Title Page</span>
+        </div>
+        <h1 class="name">Myat Moe<span class="space"></span>Thwin<span class="dot">.</span></h1>
+        <p class="pitch">
+          I keep APAC data centres running — from the hypervisor and SAN fabric up to the monitoring stack that proves they are.
+        </p>
+        <p class="summary">
+          Over <strong>fifteen years</strong> delivering mission-critical infrastructure across Singapore, Japan, Australia, and Malaysia. Currently Senior Systems Administrator — Operational Technology at <strong>STACK Infrastructure (APAC)</strong>, engineering multi-site VMware vSphere, NetApp ONTAP, Pure Storage, SQL Server Always On, and Veeam backup platforms, with observability built on Zabbix, Grafana, NetGain CloudVista, and Uptime Kuma.
+        </p>
+
+        <div class="meta-grid">
+          <div class="meta-cell">
+            <div class="label">Discipline</div>
+            <div class="value">Data Centre Operations</div>
+          </div>
+          <div class="meta-cell">
+            <div class="label">Focus</div>
+            <div class="value">VMware · Storage · OT</div>
+          </div>
+          <div class="meta-cell">
+            <div class="label">Based</div>
+            <div class="value">Singapore</div>
+          </div>
+          <div class="meta-cell">
+            <div class="label">Experience</div>
+            <div class="value">15+ years, APAC</div>
+          </div>
+          <div class="meta-cell">
+            <div class="label">Availability</div>
+            <div class="value">Open — on request</div>
+          </div>
+        </div>
+
+        <div class="cta-row">
+          <a href="#correspond" class="cta primary">Start a conversation <span class="arrow">→</span></a>
+          <a href="https://www.linkedin.com/in/myatmoe" target="_blank" class="cta">LinkedIn <span class="arrow">↗</span></a>
+          <a href="https://resume.myatmoe.info" target="_blank" class="cta">Full résumé <span class="arrow">↓</span></a>
+        </div>
+      </div>
+
+      <aside class="title-aside">
+        <div class="figure">
+          <img src="assets/img/Myat Moe Profile.jpeg" alt="Portrait of Myat Moe Thwin"
+               onerror="this.style.display='none';this.parentElement.querySelector('.initials-fallback').style.display='flex'">
+          <div class="initials-fallback" style="display:none">MMT</div>
+        </div>
+        <div class="figure-caption">
+          <span><em>Fig. 01</em> — Portrait, Singapore</span>
+          <span class="no">2026</span>
+        </div>
+
+        <div class="metrics">
+          <div class="metric">
+            <div class="big">15<span class="unit">+</span></div>
+            <div class="lbl">Years in<br>infrastructure</div>
+          </div>
+          <div class="metric">
+            <div class="big">5</div>
+            <div class="lbl">APAC countries<br>operated</div>
+          </div>
+          <div class="metric">
+            <div class="big">25<span class="unit">+</span></div>
+            <div class="lbl">Vendor<br>certifications</div>
+          </div>
+          <div class="metric">
+            <div class="big">24/7</div>
+            <div class="lbl">On-call<br>SLA posture</div>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ MARQUEE ═══ -->
+<section class="marquee-section">
+  <div class="marquee">
+    <div class="marquee-track">
+      <span>VMware vSphere &amp; VCF</span><span>NetApp ONTAP</span><span>Pure Storage</span><span>Veeam Backup &amp; Replication</span><span>SQL Server Always On AG</span><span>Microsoft 365 / Azure AD</span><span>Zabbix · Grafana · Auvik</span><span>Cisco Nexus</span><span>FortiGate</span><span>Genetec Security Centre</span><span>Windows Server 2003–2025</span><span>Linux RHEL &amp; Ubuntu</span>
+      <span>VMware vSphere &amp; VCF</span><span>NetApp ONTAP</span><span>Pure Storage</span><span>Veeam Backup &amp; Replication</span><span>SQL Server Always On AG</span><span>Microsoft 365 / Azure AD</span><span>Zabbix · Grafana · Auvik</span><span>Cisco Nexus</span><span>FortiGate</span><span>Genetec Security Centre</span><span>Windows Server 2003–2025</span><span>Linux RHEL &amp; Ubuntu</span>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ §01 OPERATIONS RECORD ═══ -->
+<section id="record">
+  <div class="wrap">
+    <div class="sec-eyebrow">
+      <span class="sec-mark">§01</span>
+      <span>PROFESSIONAL RECORD</span>
+    </div>
+    <h2 class="sec-title">A chronology of the <em>work</em>.</h2>
+
+    <div class="record">
+      <div class="record-item reveal">
+        <div class="record-num">07</div>
+        <div class="record-body">
+          <div class="record-meta">
+            <span>Dec 2024 – Now</span>
+            <span>Singapore</span>
+            <span class="remote">● Current</span>
+          </div>
+          <h3 class="record-role">Senior Systems Administrator <em>— Operational Technology (APAC)</em></h3>
+          <div class="record-company"><a href="https://stackinfra.com/" target="_blank">STACK Infrastructure (APAC) Pte Ltd</a></div>
+          <ul class="record-ul">
+            <li><span class="idx">01</span><span>Engineer and operate multi-site data centre infrastructure across APAC — Japan, Australia, Malaysia — ensuring standardised deployment and operational consistency across every site.</span></li>
+            <li><span class="idx">02</span><span>Deploy and maintain VMware ESXi clusters and vCenter environments; implement NetApp ONTAP and Pure Storage platforms with replication and high-availability configurations.</span></li>
+            <li><span class="idx">03</span><span>Design vSphere HA clusters and operate Veeam backup — including monitoring, optimisation, and periodic recovery validation. Participate in DR planning and failover testing.</span></li>
+            <li><span class="idx">04</span><span>Deploy and manage the observability stack — Zabbix, Auvik, NetGain CloudVista, Uptime Kuma, Grafana, NetBox — with alerting, dashboards, and performance baselines across regional sites.</span></li>
+            <li><span class="idx">05</span><span>Provide infrastructure support for OT platforms — Genetec CCTV, Schneider BMS, Niagara — and implement SQL Server Always On clusters for application-layer failover.</span></li>
+          </ul>
+          <div class="record-tags">
+            <span>VMware vSphere</span><span>NetApp</span><span>Pure Storage</span><span>Veeam</span><span>SQL HA</span><span>Zabbix</span><span>Grafana</span><span>OT Systems</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="record-item reveal">
+        <div class="record-num">06</div>
+        <div class="record-body">
+          <div class="record-meta">
+            <span>Jan 2023 – Dec 2024</span>
+            <span>Singapore · 2 years</span>
+          </div>
+          <h3 class="record-role">Senior System Administrator <em>— APAC</em></h3>
+          <div class="record-company"><a href="https://bridgedatacentres.com/" target="_blank">Bridge Data Centres International Pte Ltd</a></div>
+          <ul class="record-ul">
+            <li><span class="idx">01</span><span>Managed VMware infrastructure for IT and BMS servers across multiple data centres; implemented HA clusters, vMotion, and backup solutions.</span></li>
+            <li><span class="idx">02</span><span>Administered Microsoft 365 hybrid and domain user management across Singapore, Malaysia, Thailand, and India under consistent access-control policies.</span></li>
+            <li><span class="idx">03</span><span>Implemented Zabbix monitoring, IT Asset Management, ThinRDP JumpHost for secure vendor access, RADIUS authentication, and regional NTP servers.</span></li>
+            <li><span class="idx">04</span><span>Managed and customised the NetSuite ERP platform; administered antivirus, security policies, and incident response; ensured internal and external audit compliance.</span></li>
+          </ul>
+          <div class="record-tags">
+            <span>VMware</span><span>Microsoft 365</span><span>Zabbix</span><span>NetSuite ERP</span><span>IT Security</span><span>APAC User Mgmt</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="record-item reveal">
+        <div class="record-num">05</div>
+        <div class="record-body">
+          <div class="record-meta">
+            <span>Aug 2022 – Jan 2023</span>
+            <span>Singapore</span>
+          </div>
+          <h3 class="record-role">Technical Manager</h3>
+          <div class="record-company"><a href="http://tachub.com/" target="_blank">TACHub Systems (Asia) Pte Ltd</a></div>
+          <ul class="record-ul">
+            <li><span class="idx">01</span><span>Provided 24/7 support to complex customer environments ensuring high availability and SLA compliance across the portfolio.</span></li>
+            <li><span class="idx">02</span><span>Led and supervised the infrastructure team; owned projects end-to-end from scoping through testing, implementation, and go-live.</span></li>
+            <li><span class="idx">03</span><span>Delivered L2 and L3 technical support; prepared and presented weekly and monthly reports to internal and external stakeholders.</span></li>
+          </ul>
+          <div class="record-tags">
+            <span>Team Leadership</span><span>L2/L3 Support</span><span>Project Management</span><span>SLA Management</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="record-item reveal">
+        <div class="record-num">04</div>
+        <div class="record-body">
+          <div class="record-meta">
+            <span>Aug 2019 – Feb 2021</span>
+            <span>Yangon, Myanmar · 1.5 years</span>
+          </div>
+          <h3 class="record-role">National ICT &amp; IM Parliament Consultant</h3>
+          <div class="record-company"><a href="https://www.undp.org/myanmar" target="_blank">United Nations Development Programme (UNDP)</a></div>
+          <ul class="record-ul">
+            <li><span class="idx">01</span><span>Oversaw ICT infrastructure delivery for all 14 State and Region Parliaments: PCs, file servers, storage systems, and the regional LMS platform.</span></li>
+            <li><span class="idx">02</span><span>Led ICT infrastructure training covering servers, virtualisation, firewalls, and network devices; provided SharePoint development training and local ICT support.</span></li>
+            <li><span class="idx">03</span><span>Facilitated SDMX platform development for the Central Statistical Organization and Department of Population; directed Master Plans, Work Plans, and Microsoft 365 / SharePoint rollouts for inter-parliament communication.</span></li>
+          </ul>
+          <div class="record-tags">
+            <span>ICT Infrastructure</span><span>SharePoint</span><span>Microsoft 365</span><span>LMS Development</span><span>Capacity Building</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="record-item reveal">
+        <div class="record-num">03</div>
+        <div class="record-body">
+          <div class="record-meta">
+            <span>Oct 2017 – Aug 2019</span>
+            <span>Nay Pyi Taw, Myanmar · 2 years</span>
+          </div>
+          <h3 class="record-role">National ICT Expert / Consultant</h3>
+          <div class="record-company">Myanma Economic Bank — Ministry of Planning &amp; Finance</div>
+          <ul class="record-ul">
+            <li><span class="idx">01</span><span>Supported development of Myanmar's largest government Data Centre (MPFMP) using VMware ESXi, HPE Blade Servers, SAN Storage, and Cisco networking with high-availability infrastructure.</span></li>
+            <li><span class="idx">02</span><span>Established the IT Development and Support Department; coordinated efficient ICT operations across 83 branch offices nationwide.</span></li>
+            <li><span class="idx">03</span><span>Delivered training programs with HPE, Microsoft, and VMware in data management, server administration, information security, and network operations.</span></li>
+          </ul>
+          <div class="record-tags">
+            <span>DC Build</span><span>VMware ESXi</span><span>HPE Blade</span><span>SAN</span><span>Cisco</span><span>AD / DNS / DHCP</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="record-item reveal">
+        <div class="record-num">02</div>
+        <div class="record-body">
+          <div class="record-meta">
+            <span>Mar 2015 – Sep 2017</span>
+            <span>Yangon, Myanmar · 2.5 years</span>
+          </div>
+          <h3 class="record-role">Technical Solution Manager</h3>
+          <div class="record-company"><a href="https://www.inyaland.com/" target="_blank">InyaLand Company Limited</a></div>
+          <ul class="record-ul">
+            <li><span class="idx">01</span><span>Provided 24/7 support for complex customer environments; led the infrastructure team to meet service level requirements.</span></li>
+            <li><span class="idx">02</span><span>Managed daily data centre operations: ESXi hosted servers, Veeam, Shadow Protect, Symantec Backup Exec, and Symantec Antivirus deployment.</span></li>
+            <li><span class="idx">03</span><span>Designed, tested, installed and monitored new VMs; managed HA and vMotion environments; delivered training to Parliament ICT staff.</span></li>
+          </ul>
+          <div class="record-tags">
+            <span>Data Centre Ops</span><span>VMware HA</span><span>Veeam</span><span>SAN</span><span>Managed Services</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="record-item reveal">
+        <div class="record-num">01</div>
+        <div class="record-body">
+          <div class="record-meta">
+            <span>Nov 2014 – Mar 2015</span>
+            <span>Yangon, Myanmar</span>
+          </div>
+          <h3 class="record-role">Senior Server Engineer</h3>
+          <div class="record-company">Hewlett Packard (ES-ITO-YGN) Pte Ltd</div>
+          <ul class="record-ul">
+            <li><span class="idx">01</span><span>Maintained physical servers and ESX hosts with 24/7 Data Centre SLA adherence using HPSM tools.</span></li>
+            <li><span class="idx">02</span><span>Managed CommVault Backup for all servers; conducted monthly Microsoft Windows Security Patch updates; designed and monitored new VMs for service offerings.</span></li>
+          </ul>
+          <div class="record-tags">
+            <span>HPE Servers</span><span>CommVault</span><span>VMware ESX</span><span>Windows Patching</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ §02 CASE FILES ═══ -->
+<section id="cases">
+  <div class="wrap">
+    <div class="sec-eyebrow">
+      <span class="sec-mark">§02</span>
+      <span>SELECTED CASE FILES</span>
+    </div>
+    <h2 class="sec-title">Evidence of the <em>work</em>.</h2>
+
+    <div class="cases">
+      <article class="case reveal">
+        <div class="case-glyph">◇</div>
+        <div class="case-meta"><span class="case-no">01</span><span class="case-category">MULTI-SITE INFRASTRUCTURE</span></div>
+        <h3 class="case-title">APAC Multi-Site Data Centre Operations</h3>
+        <p class="case-desc">Engineered and standardised data centre infrastructure across Japan, Australia, and Malaysia. Deployed VMware ESXi clusters with vCenter, NetApp ONTAP and Pure Storage platforms with replication and HA, and SQL Server Always On AG for application-layer failover.</p>
+        <div class="case-tags"><span>VMware</span><span>NetApp</span><span>Pure Storage</span><span>SQL HA</span><span>OT</span></div>
+        <div class="case-footer"><span class="case-org">STACK Infrastructure · 2024–Now</span></div>
+      </article>
+
+      <article class="case reveal">
+        <div class="case-glyph">◉</div>
+        <div class="case-meta"><span class="case-no">02</span><span class="case-category">OBSERVABILITY STACK</span></div>
+        <h3 class="case-title">Unified Monitoring &amp; Alerting Platform</h3>
+        <p class="case-desc">Deployed Zabbix, Auvik, NetGain CloudVista, Uptime Kuma, Grafana, and NetBox across regional sites. Configured alerting, dashboards, and performance baselines for infrastructure, applications, and OT equipment with unified visibility across APAC.</p>
+        <div class="case-tags"><span>Zabbix</span><span>Grafana</span><span>NetGain</span><span>Uptime Kuma</span><span>NetBox</span></div>
+        <div class="case-footer"><span class="case-org">STACK Infrastructure · 2024–Now</span></div>
+      </article>
+
+      <article class="case reveal">
+        <div class="case-glyph">⟐</div>
+        <div class="case-meta"><span class="case-no">03</span><span class="case-category">IT &amp; OT CONSOLIDATION</span></div>
+        <h3 class="case-title">APAC Platform Consolidation</h3>
+        <p class="case-desc">Consolidated obsolete and standalone servers into VM HA clusters. Deployed print, NTP, RADIUS, Passbolt, ITAM, Uptime Kuma, ThinRDP JumpHost, HelpDesk, RMM, and Patch Management across the APAC estate; implemented SharePoint Online landing page with permission control.</p>
+        <div class="case-tags"><span>VM Consolidation</span><span>RADIUS</span><span>SharePoint</span><span>Patch Mgmt</span></div>
+        <div class="case-footer"><span class="case-org">Bridge Data Centres · 2023–2024</span></div>
+      </article>
+
+      <article class="case reveal">
+        <div class="case-glyph">§</div>
+        <div class="case-meta"><span class="case-no">04</span><span class="case-category">eGOVERNMENT BUILD</span></div>
+        <h3 class="case-title">Myanmar Union Parliament Data Centre</h3>
+        <p class="case-desc">Delivered the ICT infrastructure for the Pyidaungsu Hluttaw eGovernment initiative and all 14 State / Region Parliaments. Deployed file servers, storage, a LMS platform, and SharePoint Online with inter-parliament security and permission structure.</p>
+        <div class="case-tags"><span>eGovernment</span><span>SharePoint</span><span>M365</span><span>LMS</span></div>
+        <div class="case-footer"><span class="case-org">UNDP Myanmar · 2019–2021</span></div>
+      </article>
+
+      <article class="case reveal">
+        <div class="case-glyph">▲</div>
+        <div class="case-meta"><span class="case-no">05</span><span class="case-category">GOVERNMENT DC BUILD</span></div>
+        <h3 class="case-title">Myanma Economic Bank — Modernisation of PFM</h3>
+        <p class="case-desc">Supported development of Myanmar's largest government Data Centre for the MPFMP initiative using VMware ESXi, HPE Blade Servers, SAN Storage, Cisco networking, and HA infrastructure. Established the IT Development and Support Department coordinating 83 branch offices.</p>
+        <div class="case-tags"><span>HPE Blade</span><span>SAN</span><span>VMware</span><span>Cisco</span><span>AD/DNS/DHCP</span></div>
+        <div class="case-footer"><span class="case-org">MEB · Ministry of Finance · 2017–2019</span></div>
+      </article>
+
+      <article class="case reveal">
+        <div class="case-glyph">◈</div>
+        <div class="case-meta"><span class="case-no">06</span><span class="case-category">DATA PLATFORM</span></div>
+        <h3 class="case-title">Central Statistical Organization SDMX Platform</h3>
+        <p class="case-desc">Facilitated the development of ICT infrastructure and the SDMX platform for the Central Statistical Organization (CSO) and the Department of Population (DoP). Delivered comprehensive capacity building and hands-on training to local ICT teams.</p>
+        <div class="case-tags"><span>SDMX</span><span>Data Platform</span><span>ICT Capacity</span></div>
+        <div class="case-footer"><span class="case-org">UNDP Myanmar · 2019–2021</span></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ §03 COMPETENCY INDEX ═══ -->
+<section id="competencies">
+  <div class="wrap">
+    <div class="sec-eyebrow">
+      <span class="sec-mark">§03</span>
+      <span>COMPETENCY INDEX</span>
+    </div>
+    <h2 class="sec-title">What I bring to the <em>rack</em>.</h2>
+
+    <div class="comp-grid">
+      <div class="comp-col reveal">
+        <h3>Technical <span class="letter">T</span></h3>
+        <ol>
+          <li><span class="idx">T.01</span><span class="name">VMware vSphere / ESXi / vCenter / VCF</span><span class="dot">●</span></li>
+          <li><span class="idx">T.02</span><span class="name">NetApp ONTAP &amp; Pure Storage</span><span class="dot">●</span></li>
+          <li><span class="idx">T.03</span><span class="name">Veeam Backup &amp; Replication</span><span class="dot">●</span></li>
+          <li><span class="idx">T.04</span><span class="name">Windows Server &amp; Active Directory</span><span class="dot">●</span></li>
+          <li><span class="idx">T.05</span><span class="name">SQL Server Always On AG &amp; Failover Cluster</span><span class="dot">●</span></li>
+          <li><span class="idx">T.06</span><span class="name">Microsoft 365, Azure AD, SharePoint Online</span><span class="dot">●</span></li>
+          <li><span class="idx">T.07</span><span class="name">Linux Administration (RHEL / Ubuntu)</span><span class="dot">●</span></li>
+          <li><span class="idx">T.08</span><span class="name">Zabbix · Grafana · Auvik · NetBox · Uptime Kuma</span><span class="dot">●</span></li>
+          <li><span class="idx">T.09</span><span class="name">Cisco Nexus · FortiGate · RADIUS</span><span class="dot">●</span></li>
+          <li><span class="idx">T.10</span><span class="name">HPE / Dell Blade, SAN &amp; Storage Fabric</span><span class="dot">●</span></li>
+          <li><span class="idx">T.11</span><span class="name">OT Integration (Genetec, Schneider BMS, Niagara)</span><span class="dot">●</span></li>
+          <li><span class="idx">T.12</span><span class="name">Disaster Recovery &amp; DR Failover Testing</span><span class="dot">●</span></li>
+        </ol>
+      </div>
+
+      <div class="comp-col reveal">
+        <h3>Practice &amp; People <span class="letter">S</span></h3>
+        <ol>
+          <li><span class="idx">S.01</span><span class="name">Project Management (PMP certified)</span><span class="dot">●</span></li>
+          <li><span class="idx">S.02</span><span class="name">Cross-functional APAC Team Leadership</span><span class="dot">●</span></li>
+          <li><span class="idx">S.03</span><span class="name">Vendor &amp; Procurement Management</span><span class="dot">●</span></li>
+          <li><span class="idx">S.04</span><span class="name">IT Governance &amp; Audit Compliance</span><span class="dot">●</span></li>
+          <li><span class="idx">S.05</span><span class="name">Incident Response &amp; Root-Cause Analysis</span><span class="dot">●</span></li>
+          <li><span class="idx">S.06</span><span class="name">Security Hardening &amp; Patch Compliance</span><span class="dot">●</span></li>
+          <li><span class="idx">S.07</span><span class="name">Technical Documentation &amp; Reporting</span><span class="dot">●</span></li>
+          <li><span class="idx">S.08</span><span class="name">Training &amp; Mentorship</span><span class="dot">●</span></li>
+          <li><span class="idx">S.09</span><span class="name">24/7 On-Call Operations</span><span class="dot">●</span></li>
+          <li><span class="idx">S.10</span><span class="name">Change Management &amp; MOP Authoring</span><span class="dot">●</span></li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ §04 CREDENTIALS ═══ -->
+<section id="credentials">
+  <div class="wrap">
+    <div class="sec-eyebrow">
+      <span class="sec-mark">§04</span>
+      <span>CREDENTIALS &amp; RECORD</span>
+    </div>
+    <h2 class="sec-title">On paper, <em>formally</em>.</h2>
+
+    <div class="cred-grid">
+      <div class="cred-block cred-edu reveal">
+        <h3>Education</h3>
+        <h4>Bachelor of Computer Science (B.C.Sc)</h4>
+        <p>University of Computer Studies, Yangon (UCSY)</p>
+        <div class="cred-year">2000 – 2004</div>
+        <p class="cred-note">A four-year programme in computer science fundamentals, systems, and networking.</p>
+      </div>
+
+      <div class="cred-block reveal">
+        <h3>Certifications</h3>
+        <a href="https://www.credly.com/users/myatmoethwin/badges/credly" target="_blank" class="credly-badge-link">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L2 7v10l10 5 10-5V7L12 2zm0 2.3L19.5 8 12 11.7 4.5 8 12 4.3zM4 9.5l7 3.5v7l-7-3.5v-7zm16 0v7l-7 3.5v-7l7-3.5z"/></svg>
+          <span>Public badges verifiable on Credly</span>
+          <span class="credly-arrow">↗</span>
+        </a>
+        <ul class="cert-list">
+          <li><span class="idx">01</span><span class="name">How Agents Work <span class="credly-dot" title="Verified on Credly">●</span></span><span class="issuer">Section AI · 2026</span></li>
+          <li><span class="idx">02</span><span class="name">Section Coach: Basic AI Accelerator <span class="credly-dot" title="Verified on Credly">●</span></span><span class="issuer">Section AI · 2026</span></li>
+          <li><span class="idx">03</span><span class="name">VCP — VMware Cloud Foundation Administrator (VCF 9.0) <span class="credly-dot" title="Verified on Credly">●</span></span><span class="issuer">Broadcom / VMware · 2026</span></li>
+          <li><span class="idx">04</span><span class="name">CrowdStrike Falcon Platform Suite — FALCON 100/101/102/104/105 + GEN 100</span><span class="issuer">CrowdStrike University · 2025</span></li>
+          <li><span class="idx">05</span><span class="name">CrowdStrike Falcon Identity Protection Fundamentals (IDP 170)</span><span class="issuer">CrowdStrike University · 2025</span></li>
+          <li><span class="idx">06</span><span class="name">CrowdStrike Next-Gen SIEM Fundamentals (SIEM 100)</span><span class="issuer">CrowdStrike University · 2025</span></li>
+          <li><span class="idx">07</span><span class="name">Cybersecurity Foundation</span><span class="issuer">2023</span></li>
+          <li><span class="idx">08</span><span class="name">Fortinet NSE — Network Security Expert</span><span class="issuer">Fortinet · 2020</span></li>
+          <li><span class="idx">09</span><span class="name">ICSI | CNSS Network Security Specialist</span><span class="issuer">ICSI · 2020</span></li>
+          <li><span class="idx">10</span><span class="name">Project Management Professional (PMP)</span><span class="issuer">PMI · 2019</span></li>
+          <li><span class="idx">11</span><span class="name">CISSP Security Training</span><span class="issuer">ISC² · 2019</span></li>
+          <li><span class="idx">12</span><span class="name">IBM Blockchain Essentials <span class="credly-dot" title="Verified on Credly">●</span></span><span class="issuer">IBM · 2019</span></li>
+          <li><span class="idx">13</span><span class="name">AWS Cloud Practitioner Essentials</span><span class="issuer">AWS · 2019</span></li>
+          <li><span class="idx">14</span><span class="name">VMware vSphere 6 Masterclass</span><span class="issuer">VMware · 2019</span></li>
+          <li><span class="idx">15</span><span class="name">HPE StoreEver, StorageWorks, StoreEasy, MSA Service Qualification</span><span class="issuer">HPE · 2017</span></li>
+          <li><span class="idx">16</span><span class="name">HPE ProLiant Blade / ML / DL / SL / Apollo SQ</span><span class="issuer">HPE · 2016</span></li>
+          <li><span class="idx">17</span><span class="name">Virtualization for Beginners <span class="credly-dot" title="Verified on Credly">●</span></span><span class="issuer">VMware IT Academy · 2016</span></li>
+          <li><span class="idx">18</span><span class="name">Exam 410 — Installing &amp; Configuring Windows Server 2012 <span class="credly-dot" title="Verified on Credly">●</span></span><span class="issuer">Microsoft · 2015</span></li>
+          <li><span class="idx">19</span><span class="name">VCA — DC · Cloud · Workforce Mobility</span><span class="issuer">VMware · 2013</span></li>
+          <li><span class="idx">20</span><span class="name">Cisco Certified Network Associate (CCNA)</span><span class="issuer">Cisco · 2010</span></li>
+          <li><span class="idx">21</span><span class="name">MCITP — Windows Server 2003 (70-290/291/284)</span><span class="issuer">Microsoft · 2009</span></li>
+        </ul>
+      </div>
+
+      <div class="cred-block reveal">
+        <h3>Languages</h3>
+        <ul class="cred-langs">
+          <li><span class="lang">Burmese</span><span class="level">Native</span></li>
+          <li><span class="lang">English</span><span class="level">Fluent</span></li>
+        </ul>
+
+        <h3 style="margin-top: 36px;">In progress</h3>
+        <ul class="cred-langs">
+          <li><span class="lang">CISSP</span><span class="level">Studying</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ §05 FAQ ═══ -->
+<section id="faq">
+  <div class="wrap">
+    <div class="sec-eyebrow">
+      <span class="sec-mark">§05</span>
+      <span>ENQUIRIES ON FILE</span>
+    </div>
+    <h2 class="sec-title">Questions, <em>answered</em>.</h2>
+
+    <div class="faq-list">
+      <div class="faq-item">
+        <details open>
+          <summary>
+            <span class="q-idx">Q.01</span>
+            <span class="q-text">What does Myat Moe specialise in?</span>
+            <span class="q-sign">+</span>
+          </summary>
+          <div class="answer">Senior Systems Administration for data centre and operational technology environments across APAC. The core specialisation is the full infrastructure stack — VMware vSphere, NetApp ONTAP, Pure Storage, SQL Server HA, and Veeam — plus the monitoring that proves it's working: Zabbix, Grafana, NetGain CloudVista, Uptime Kuma, and NetBox.</div>
+        </details>
+      </div>
+
+      <div class="faq-item">
+        <details>
+          <summary>
+            <span class="q-idx">Q.02</span>
+            <span class="q-text">How much experience and where has he worked?</span>
+            <span class="q-sign">+</span>
+          </summary>
+          <div class="answer">Over 15 years in IT infrastructure, split across seven organisations in Singapore and Myanmar. Current role at STACK Infrastructure (APAC) covers data centres in Japan, Australia, and Malaysia. Prior roles span Bridge Data Centres, UNDP Myanmar, Myanma Economic Bank, InyaLand, and Hewlett Packard ITO.</div>
+        </details>
+      </div>
+
+      <div class="faq-item">
+        <details>
+          <summary>
+            <span class="q-idx">Q.03</span>
+            <span class="q-text">Is he open to new roles?</span>
+            <span class="q-sign">+</span>
+          </summary>
+          <div class="answer">Yes — open to Senior Systems Administrator, Infrastructure Engineer, or Technical Lead roles across APAC, on-site in Singapore or remote. Notice period is as per the current engagement. Reach out through the correspondence section below and a reply will follow within a working day.</div>
+        </details>
+      </div>
+
+      <div class="faq-item">
+        <details>
+          <summary>
+            <span class="q-idx">Q.04</span>
+            <span class="q-text">Which tools and platforms are used day-to-day?</span>
+            <span class="q-sign">+</span>
+          </summary>
+          <div class="answer">VMware vSphere / vCenter / VCF for compute virtualisation; NetApp ONTAP and Pure Storage for storage; Veeam for backup and DR; Microsoft Windows Server, Active Directory, SQL Server Always On, and Microsoft 365 for the platform layer; Zabbix, Grafana, Auvik, NetBox, Uptime Kuma, and NetGain CloudVista for monitoring and documentation; Cisco Nexus and FortiGate for networking; Genetec Security Centre and Schneider BMS for OT integration.</div>
+        </details>
+      </div>
+
+      <div class="faq-item">
+        <details>
+          <summary>
+            <span class="q-idx">Q.05</span>
+            <span class="q-text">What measurable impact has he delivered?</span>
+            <span class="q-sign">+</span>
+          </summary>
+          <div class="answer">Standardised multi-site DC infrastructure across three APAC countries at STACK; deployed APAC-wide monitoring consolidating six platforms into a unified view; consolidated obsolete standalone servers into VM HA clusters at Bridge Data Centres; delivered the Myanmar Union Parliament Data Centre and ICT platforms for all 14 State and Region Parliaments at UNDP; and supported the build of Myanmar's largest government Data Centre coordinating 83 branch offices at Myanma Economic Bank.</div>
+        </details>
+      </div>
+
+      <div class="faq-item">
+        <details>
+          <summary>
+            <span class="q-idx">Q.06</span>
+            <span class="q-text">Based where, and how to reach him?</span>
+            <span class="q-sign">+</span>
+          </summary>
+          <div class="answer">Based in Singapore and available for roles across APAC. Email <a href="mailto:myatmoe27@gmail.com" style="color:var(--accent); border-bottom:1px solid var(--accent)">myatmoe27@gmail.com</a> or connect on <a href="https://www.linkedin.com/in/myatmoe" target="_blank" style="color:var(--accent); border-bottom:1px solid var(--accent)">LinkedIn</a>. Phone is +65 9180 4329 for recruiters and hiring managers.</div>
+        </details>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ §06 CORRESPONDENCE ═══ -->
+<section id="correspond">
+  <div class="wrap">
+    <div class="sec-eyebrow">
+      <span class="sec-mark">§06</span>
+      <span>OPEN CORRESPONDENCE</span>
+    </div>
+    <h2 class="sec-title">Let's architect the <em>next build</em>.</h2>
+
+    <p class="corr-intro">Open to Senior Systems Administrator, Infrastructure Engineer, or Technical Lead roles across APAC — remote or on-site. Send the brief; a structured response, a few clarifying questions, and a shortlist of next steps will come back within a day.</p>
+
+    <div class="corr-grid">
+      <a href="mailto:myatmoe27@gmail.com" class="corr-row">
+        <span class="lbl">Email <span class="arrow">→</span></span>
+        <span class="val">myatmoe27@gmail.com</span>
+      </a>
+      <a href="https://www.linkedin.com/in/myatmoe" target="_blank" class="corr-row">
+        <span class="lbl">LinkedIn <span class="arrow">↗</span></span>
+        <span class="val">linkedin.com/in/myatmoe</span>
+      </a>
+      <a href="tel:+6591804329" class="corr-row">
+        <span class="lbl">Phone <span class="arrow">↗</span></span>
+        <span class="val">+65 9180 4329</span>
+      </a>
+      <a href="https://resume.myatmoe.info" target="_blank" class="corr-row">
+        <span class="lbl">Résumé <span class="arrow">↓</span></span>
+        <span class="val">resume.myatmoe.info</span>
+      </a>
+    </div>
+
+    <div class="corr-refs reveal">
+      <h3>Referees — on request</h3>
+      <p class="refs-note">Professional references from senior leaders at UNDP, Bridge Data Centres, and prior employers available on request. Please reach out via email to arrange introductions.</p>
+    </div>
+  </div>
+</section>
+
+</div><!-- end #page -->
+
+<!-- ═══ FOOTER ═══ -->
+<footer>
+  <div class="wrap">
+    <div class="end">© 2026 Myat Moe Thwin <span class="accent-dot">·</span> End of dossier.</div>
+    <div class="colophon">
+      <strong>Colophon:</strong> set in Space Grotesk, Inter &amp; JetBrains Mono. Based in Singapore. All content verified by the author.
+    </div>
+  </div>
+</footer>
+
+<script>
+// ── Active section tracking ──
+const sections = document.querySelectorAll('section[id]');
+const navLinks = document.querySelectorAll('#topbar .topnav a');
+const navObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      navLinks.forEach(a => a.classList.remove('active'));
+      const a = document.querySelector(`#topbar a[href="#${e.target.id}"]`);
+      if (a) a.classList.add('active');
+    }
+  });
+}, { threshold: 0.3, rootMargin: '-60px 0px -40% 0px' });
+sections.forEach(s => navObs.observe(s));
+
+// ── Scroll reveal ──
+const reveals = document.querySelectorAll('.reveal');
+if ('IntersectionObserver' in window) {
+  reveals.forEach(r => r.classList.add('animate'));
+  const revObs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); revObs.unobserve(e.target); }
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+  reveals.forEach(r => revObs.observe(r));
+  setTimeout(() => {
+    document.querySelectorAll('.reveal.animate:not(.visible)').forEach(el => el.classList.add('visible'));
+  }, 1500);
+}
+</script>
+</body>
+</html>
